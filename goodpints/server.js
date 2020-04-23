@@ -8,8 +8,11 @@ const app = express();
 
 
 
-//connecting to database
-mongoose.connect('mongodb://localhost/UserPoints')
+//connecting to database usning mongoose
+mongoose.connect('mongodb://localhost/UserPoints',{
+    useCreateIndex: true,
+    useNewUrlParser: true
+})
 mongoose.Promise = global.Promise;
 
 //connecting to firebase for auth
