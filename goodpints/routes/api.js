@@ -2,20 +2,41 @@ const express = require('express');
 const router = express.Router();
 const Points = require('../model/points');
 
-router.get('/:id',function(req,res,next){
-    //res.send('we are in');
-    Points.findById({_id: req.params.id},req.body).then(function(point){
-        res.send(point);
+router.get('/:id', async (req,res)=>{
+   
+
+    try{
+        const getpoints =  await Points.findById({_id: req.params.id},req.body);
+        
+
+        if (!getpoints) {
+            return res.status(404).send();
+        }
+        res.send(getpoints);
+
+    }catch(e){
+            res.status(400).send(e);
+    }
+
+
+
+  
     })
 
-})
 
 
-router.post('/',function(req,res,next){
-    Points.create(req.body).then(function(point){
-        
-        res.send(point);
-    }).catch(next);
+
+router.post('/', async (req,res)=>{
+
+    try{
+        const savedata = await Points.create(req.body);
+        res.send(savedata);
+    }catch(e){
+        res.status(400).send();
+    }
+
+ 
+   
 });
 
 

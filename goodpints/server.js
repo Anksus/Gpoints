@@ -11,7 +11,8 @@ const app = express();
 //connecting to database usning mongoose
 mongoose.connect('mongodb://localhost/UserPoints',{
     useCreateIndex: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
 mongoose.Promise = global.Promise;
 
@@ -28,16 +29,13 @@ app.use(bodyParser.json());
 //using middleware to use API.
 app.use('/api',require('./routes/api'));
 
-//error handling middleware
-app.use(function(err,req,res,next){
-        console.log(err);
-        res.status(422).send({error: err.message});
-});
+
 
 
 // listening to ports
-app.listen(process.env.port || 4000, function(){
-    console.log('we are listening; port 4000');
+const port = process.env.port || 4000;
+app.listen(port, () =>{
+    console.log('we are listening to' +port );
 });
 
 

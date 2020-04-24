@@ -72,7 +72,8 @@ const GoodPoints = new Schema({
     },
     anythingElse : {
         type: String,
-        default : 'nothing'
+        default : 'nothing',
+        trim: true
     },
 
     
