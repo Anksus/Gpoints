@@ -1,1 +1,7 @@
-# Gpoints
+#GoodPoints
+
+backend codes...
+
+#database 
+localhost
+
