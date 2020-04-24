@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Points = require('../model/points');
 
+
 router.get('/:id', async (req,res)=>{
    
 
@@ -16,15 +17,8 @@ router.get('/:id', async (req,res)=>{
 
     }catch(e){
             res.status(400).send(e);
-    }
-
-
-
-  
+    } 
     })
-
-
-
 
 router.post('/', async (req,res)=>{
 
@@ -34,9 +28,18 @@ router.post('/', async (req,res)=>{
     }catch(e){
         res.status(400).send();
     }
-
  
-   
+});
+
+router.post('/:id', async (req,res)=>{
+
+    try{
+        const savedata = await Points.create(req.body);
+        res.send(savedata);
+    }catch(e){
+        res.status(400).send();
+    }
+ 
 });
 
 

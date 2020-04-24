@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 var admin = require('firebase-admin');
+const UserRouter = require('./routes/user');
+const PointsRouter = require('./routes/pointsAPI');
 
 //express app
 const app = express();
@@ -14,20 +16,16 @@ mongoose.connect('mongodb://localhost/UserPoints',{
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-mongoose.Promise = global.Promise;
 
-//connecting to firebase for auth
-// admin.initializeApp({
-//     credential: admin.credential.applicationDefault(),
-//     databaseURL: 'mongodb://localhost/UserPoints'
-    
-//   });
+
 
 //using middleware to load data in json format.
 app.use(bodyParser.json());
+app.use(express.json());
 
 //using middleware to use API.
-app.use('/api',require('./routes/api'));
+app.use('api',PointsRouter);
+app.use(UserRouter);
 
 
 
