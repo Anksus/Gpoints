@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         trim: true,
+        unique: true,
         required: true,
         lowercase: true,
         validate(value){
@@ -45,7 +46,29 @@ const userSchema = mongoose.Schema({
 }
 );
 
+//login functionality - find by credentials of login(search database)
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email })
 
+    if (!user) {
+        
+        throw new Error('Unable to login')
+    }
+    
+    const isMatch = await bcrpyt.compare(password, user.password)
+    
+    if (!isMatch) {
+        
+        throw new Error('Unable to login')
+    }
+   
+    return user
+}
+
+
+
+
+//added encryption functionality to password
 userSchema.pre('save', async function(next){
 
     const user = this;

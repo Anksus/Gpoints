@@ -3,40 +3,6 @@ const Schema = mongoose.Schema;
 
 const GoodPoints = new Schema({
 
-    // GPoints : [
-
-    // {   task : { type: String},
-    //     amount : { type: Number, default: 0}
-    // },
-    // {   task : { type: String},
-    //     amount : { type: Number, default: 0}
-    // },
-    // {   task : { type: String},
-    //     amount : { type: Number, default: 0}
-    // },
-    // {   task : { type: String},
-    //     amount : { type: Number, default: 0}
-    // },
-    // {   task : { type: String},
-    //     amount : { type: Number, default: 0}
-    // },
-    // {   task : { type: String},
-    //     amount : { type: Number, default: 0}
-    // },
-    // {   task : { type: String},
-    //     amount : { type: Number, default: 0}
-    // },
-    // {   task : { type: String},
-    //     amount : { type: Number, default: 0}
-    // },
-    // {
-    //     tell:  {type: String,default : 'nothing'} 
-        
-    // }
-    // ]
-
-
-
 
     MSD : {
         type: Number,

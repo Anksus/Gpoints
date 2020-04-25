@@ -28,6 +28,16 @@ router.get('/user/:id', async (req,res)=>{
     }
 })
 
+router.post('/user/login', async (req, res) => {
+    console.log('we are in ')
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password);
+        console.log('we wrein side of cre')
+        res.send(user)
+    } catch (e) {
+        res.status(400).send()
+    }
+})
 
 
 
