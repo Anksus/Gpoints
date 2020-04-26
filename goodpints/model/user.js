@@ -1,6 +1,7 @@
 const mongoose  = require('mongoose');
 const validator = require('validator');
 const bcrpyt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 
 const userSchema = mongoose.Schema({
@@ -41,10 +42,27 @@ const userSchema = mongoose.Schema({
                 throw new Error('Age must be a postive number')
             }
         }
-    }
+    },
+    tokens: [
+        {
+            token:{
+                type:String,
+                required: true
+            }
+          
+        }
+    ]
 
 }
 );
+
+userSchema.methods.generateAuthToken = async function(){
+    const user = this;
+    const token = jwt.sign({_id : user._id.toString()},'yeahthisisawesomme');
+    user.tokens = user.tokens.concat({token});
+    return token;
+}
+
 
 //login functionality - find by credentials of login(search database)
 userSchema.statics.findByCredentials = async (email, password) => {
