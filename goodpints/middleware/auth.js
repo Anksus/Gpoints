@@ -1,20 +1,24 @@
-const jwt = require('jsonwebtoken');
-const User = require('../model/user');
+const jwt = require('jsonwebtoken')
+const User = require('../model/user')
 
-const auth = async (req,res,next)=>{
-
-    try{
-        const token = req.header('Authorization').replace('Bearer ','');
-        const decoded = jwt.verify(token,'yeahthisisawesomme');
-        const user = await User.findOne({_id:decoded._id, 'tokens:token' : token});
+const auth = async (req, res, next) => {
+    try {
+        
+        const token = req.header('Authorization').replace('Bearer ', '')
+        const decoded = jwt.verify(token, 'thisismynewcourse')
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
 
         if (!user) {
-            throw new Error();
+            throw new Error()
         }
-        next();
-    }
-    catch(e){
-        res.status(401).send({error :'authentiction failed'});
-    }
 
+        req.token = token
+        req.user = user
+        next()
+    } catch (e) {
+        res.status(401).send({ error: 'Please authenticate.' })
+    }
 }
+
+
+module.exports = auth

@@ -3,7 +3,7 @@ const router = express.Router();
 const Points = require('../model/points');
 
 
-router.get('/:id', async (req,res)=>{
+router.get('/points:id', async (req,res)=>{
    
 
     try{
@@ -20,7 +20,7 @@ router.get('/:id', async (req,res)=>{
     } 
     })
 
-router.post('/', async (req,res)=>{
+router.post('/points', async (req,res)=>{
 
     try{
         const savedata = await Points.create(req.body);
@@ -31,7 +31,7 @@ router.post('/', async (req,res)=>{
  
 });
 
-router.post('/:id', async (req,res)=>{
+router.post('/points/:id', async (req,res)=>{
 
     try{
         const savedata = await Points.create(req.body);

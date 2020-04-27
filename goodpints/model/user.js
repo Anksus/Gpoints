@@ -1,10 +1,9 @@
-const mongoose  = require('mongoose');
-const validator = require('validator');
-const bcrpyt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose')
+const validator = require('validator')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
-
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -12,17 +11,16 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        trim: true,
         unique: true,
         required: true,
+        trim: true,
         lowercase: true,
-        validate(value){
+        validate(value) {
             if (!validator.isEmail(value)) {
-                throw new Error('email incorrect');
+                throw new Error('Email is invalid')
             }
         }
     },
-
     password: {
         type: String,
         required: true,
@@ -43,59 +41,51 @@ const userSchema = mongoose.Schema({
             }
         }
     },
-    tokens: [
-        {
-            token:{
-                type:String,
-                required: true
-            }
-          
+    tokens: [{
+        token: {
+            type: String,
+            required: true
         }
-    ]
+    }]
+})
 
+userSchema.methods.generateAuthToken = async function () {
+    const user = this
+    const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse')
+
+    user.tokens = user.tokens.concat({ token })
+    await user.save()
+
+    return token
 }
-);
 
-userSchema.methods.generateAuthToken = async function(){
-    const user = this;
-    const token = jwt.sign({_id : user._id.toString()},'yeahthisisawesomme');
-    user.tokens = user.tokens.concat({token});
-    return token;
-}
-
-
-//login functionality - find by credentials of login(search database)
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
 
     if (!user) {
-        
         throw new Error('Unable to login')
     }
-    
-    const isMatch = await bcrpyt.compare(password, user.password)
-    
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
     if (!isMatch) {
-        
         throw new Error('Unable to login')
     }
-   
+
     return user
 }
 
+// Hash the plain text password before saving
+userSchema.pre('save', async function (next) {
+    const user = this
 
-
-
-//added encryption functionality to password
-userSchema.pre('save', async function(next){
-
-    const user = this;
     if (user.isModified('password')) {
-        user.password =  await bcrpyt.hash(user.password,8);
+        user.password = await bcrypt.hash(user.password, 8)
     }
-    next();
+
+    next()
 })
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema)
 
-module.exports = User;
+module.exports = User

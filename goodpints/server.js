@@ -20,11 +20,10 @@ mongoose.connect('mongodb://localhost/UserPoints',{
 
 
 //using middleware to load data in json format.
-app.use(bodyParser.json());
 app.use(express.json());
 
 //using middleware to use API.
-app.use('api',PointsRouter);
+app.use(PointsRouter);
 app.use(UserRouter);
 
 
