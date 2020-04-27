@@ -3,8 +3,8 @@ const router = express.Router();
 const Points = require('../model/points');
 const auth = require('../middleware/auth');
 
-
-router.get('/points', auth, async (req,res)=>{
+// fetching points of authenticated person
+router.get('/points/:id', auth, async (req,res)=>{
    
 
     try{
@@ -20,6 +20,8 @@ router.get('/points', auth, async (req,res)=>{
     } 
     })
 
+
+// storing points of authenticated person
 router.post('/points', auth, async (req,res)=>{
 
     const pointss = new Points({

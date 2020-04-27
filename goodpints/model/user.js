@@ -51,6 +51,7 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+// virtual schema to store points which are related to authenticated person and not actually storing in dbs
 userSchema.virtual('points',{
     ref: 'Points',
     localField : '_id',
