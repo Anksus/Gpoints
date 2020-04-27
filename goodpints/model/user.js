@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -49,6 +50,20 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+//method to hide sensitive data
+userSchema.methods.toJSON = function(req,res){
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject;
+}
+
+
+
+//function to generate tokens
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse')
