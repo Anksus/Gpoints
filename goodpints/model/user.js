@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Points = require('./points')
 
 
 const userSchema = new mongoose.Schema({
@@ -50,6 +51,12 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+userSchema.virtual('points',{
+    ref: 'Points',
+    localField : '_id',
+    foreignField : 'owner'
+})
+
 //method to hide sensitive data
 userSchema.methods.toJSON = function(req,res){
     const user = this;
@@ -74,6 +81,7 @@ userSchema.methods.generateAuthToken = async function () {
     return token
 }
 
+//function to find user by credentials
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
 

@@ -1,46 +1,51 @@
 const express = require('express');
 const router = express.Router();
 const Points = require('../model/points');
+const auth = require('../middleware/auth');
 
 
-router.get('/points:id', async (req,res)=>{
+router.get('/points', auth, async (req,res)=>{
    
 
     try{
-        const getpoints =  await Points.findById({_id: req.params.id},req.body);
-        
+        const user = await Points.findOne({owner:req.user._id})
 
-        if (!getpoints) {
-            return res.status(404).send();
-        }
-        res.send(getpoints);
+        ///     alternate way to find data!!
+       // console.log(req.user._id);
+       // await user.populate('points').execPopulate()
+        res.send(user);
 
     }catch(e){
             res.status(400).send(e);
     } 
     })
 
-router.post('/points', async (req,res)=>{
+router.post('/points', auth, async (req,res)=>{
+
+    const pointss = new Points({
+        ...req.body,
+        owner: req.user._id
+    })
 
     try{
-        const savedata = await Points.create(req.body);
-        res.send(savedata);
+        await pointss.save();
+        res.status(200).send(pointss);
     }catch(e){
         res.status(400).send();
     }
  
 });
 
-router.post('/points/:id', async (req,res)=>{
+// router.post('/points/:id', async (req,res)=>{
 
-    try{
-        const savedata = await Points.create(req.body);
-        res.send(savedata);
-    }catch(e){
-        res.status(400).send();
-    }
+//     try{
+//         const savedata = await Points.create(req.body);
+//         res.send(savedata);
+//     }catch(e){
+//         res.status(400).send();
+//     }
  
-});
+// });
 
 
 module.exports = router;
