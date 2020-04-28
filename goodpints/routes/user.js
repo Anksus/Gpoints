@@ -16,20 +16,20 @@ router.post('/user', async (req, res) => {
     }
 })
 
-// get user by id 
-router.get('/user/:id', async (req,res)=>{
-    const _id = req.params.id;
+// get user by id  ------ dont use it now.....
+// router.get('/user/:id', async (req,res)=>
+//     const _id = req.params.id;
 
-    try{
-     const user = await User.findById(_id);
-     if (!user) {
-         return res.status(404).send();
-     }
-     res.send(user);
-    }catch(e){
-        res.status(500).send();
-    }
-})
+//     try{
+//      const user = await User.findById(_id);
+//      if (!user) {
+//          return res.status(404).send();
+//      }
+//      res.send(user);
+//     }catch(e){
+//         res.status(500).send();
+//     }
+// })
 
 //about me route --- authenticated route  (future stuff)
 // router.get('/user/me', auth,async (req, res) => {
